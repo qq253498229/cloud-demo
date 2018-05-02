@@ -1,0 +1,9 @@
+version: "3"
+services:
+  eureka:
+    image: registry.cn-beijing.aliyuncs.com/wangdali/center-eureka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      TZ: Asia/Shanghai
+    ports:
+      - "8761:8761"
