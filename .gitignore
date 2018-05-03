@@ -28,3 +28,4 @@
 mvn*
 
 docker/data
+node_modules
