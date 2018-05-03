@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 /**
  * @author wangbin
  */
@@ -33,6 +35,11 @@ public class CenterOauthApplication {
   @PostMapping("/")
   public String create(@RequestBody MultiValueMap<String, String> map) {
     return "OK";
+  }
+
+  @GetMapping("/user")
+  public Principal getUser(Principal principal) {
+    return principal;
   }
 
 
@@ -54,7 +61,9 @@ public class CenterOauthApplication {
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-      security.checkTokenAccess("isAuthenticated()");
+      security.checkTokenAccess("isAuthenticated()")
+              .tokenKeyAccess("permitAll()")
+      ;
     }
 
     @Override
@@ -63,7 +72,8 @@ public class CenterOauthApplication {
               .withClient("client")
               .secret("secret")
               .scopes("app")
-              .authorizedGrantTypes("authorization_code", "refresh_token", "implicit")
+//              .autoApprove("app")
+              .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
       ;
     }
 
