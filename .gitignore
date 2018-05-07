@@ -27,5 +27,5 @@
 .mvn
 mvn*
 
-node_modules
 docker/data
+node_modules
