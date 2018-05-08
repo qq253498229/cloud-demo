@@ -24,9 +24,9 @@ public class JavaTest {
   @Test
   public void testPasswordEncoder() {
     PasswordEncoder encoder = new BCryptPasswordEncoder();
-    String password = encoder.encode("1");
+    String password = encoder.encode("password");
     log.info("password:{}", password);
-    assertThat(encoder.matches("1", password)).isTrue();
+    assertThat(encoder.matches("password", password)).isTrue();
 
     String secret = encoder.encode("secret");
     log.info("secret:{}", secret);

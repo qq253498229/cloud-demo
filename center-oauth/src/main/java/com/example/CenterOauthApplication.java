@@ -95,6 +95,7 @@ public class CenterOauthApplication {
   @Configuration
   @EnableWebSecurity
   protected static class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests().anyRequest().authenticated()
@@ -107,6 +108,12 @@ public class CenterOauthApplication {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
       auth.inMemoryAuthentication()
               .withUser("user").password("password").roles("USER");
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+      return super.authenticationManagerBean();
     }
   }
 }
