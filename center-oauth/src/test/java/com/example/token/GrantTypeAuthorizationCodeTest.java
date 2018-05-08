@@ -17,6 +17,18 @@ import static org.junit.Assert.*;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * 通过authorization_code模式获取token，测试类
+ * 前提：
+ * 1:
+ * .and().httpBasic()
+ * .and().csrf().disable()
+ * 2:
+ * \@Bean public JwtAccessTokenConverter jwtAccessTokenConverter() {
+ * return new JwtAccessTokenConverter();
+ * }
+ * .accessTokenConverter(jwtAccessTokenConverter())
+ */
 @Slf4j
 public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
 
