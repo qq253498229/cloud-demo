@@ -14,12 +14,14 @@ import static org.springframework.http.HttpStatus.OK;
 /**
  * 通过password模式获取token，测试类
  * 前提：
- * 1 \@Override
+ * 1:
+ * \@Override
  * \@Bean
  * public AuthenticationManager authenticationManagerBean() throws Exception {
  * return super.authenticationManagerBean();
  * }
- * 2 .authorizedGrantTypes("password")
+ * 2:
+ * .authorizedGrantTypes("password")
  */
 @Slf4j
 public class GrantTypePasswordTest extends WebBaseTest {
