@@ -86,7 +86,7 @@ public class CenterOauthApplication {
               .withClient("client")
               .secret("secret")
               .scopes("app")
-              .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
+              .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit", "client_credentials")
       ;
     }
 

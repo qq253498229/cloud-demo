@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Base64;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -44,5 +45,9 @@ public class WebBaseTest {
     assertEquals(response2.getStatusCode(), HttpStatus.UNAUTHORIZED);
     ResponseEntity<String> response3 = restTemplate.postForEntity(url + "/user", null, String.class, this.port);
     assertEquals(response3.getStatusCode(), HttpStatus.UNAUTHORIZED);
+  }
+
+  protected String decode(String str) {
+    return new String(Base64.getDecoder().decode(str.getBytes()));
   }
 }
