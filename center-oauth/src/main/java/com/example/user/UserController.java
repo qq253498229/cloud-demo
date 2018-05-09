@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.user;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
