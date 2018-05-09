@@ -55,10 +55,16 @@ public class WebBaseTest {
     assertEquals(response3.getStatusCode(), UNAUTHORIZED);
   }
 
+  /**
+   * base64解码
+   */
   protected String decode(String str) {
     return new String(Base64.getDecoder().decode(str.getBytes()));
   }
 
+  /**
+   * 获取Token
+   */
   protected Map getTokenMap() throws IOException, URISyntaxException {
     Map map = new HashMap();
     map.put("client_id", clientId);
