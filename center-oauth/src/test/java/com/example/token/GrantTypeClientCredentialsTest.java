@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
  * token只能获取有效时间和client_id，无法获取用户信息
  */
 @Slf4j
-public class GrantTypeClientCredentials extends WebBaseTest {
+public class GrantTypeClientCredentialsTest extends WebBaseTest {
   @Test
   public void getTokenByClientCredentialsType() throws IOException {
     Map map = new HashMap<>();
