@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -51,8 +52,29 @@ public class WebBaseTest {
     assertEquals(response1.getStatusCode(), UNAUTHORIZED);
     ResponseEntity<String> response2 = restTemplate.postForEntity(url + "/", null, String.class, this.port);
     assertEquals(response2.getStatusCode(), UNAUTHORIZED);
-    ResponseEntity<String> response3 = restTemplate.postForEntity(url + "/user", null, String.class, this.port);
+    ResponseEntity<String> response3 = restTemplate.getForEntity(url + "/user", String.class, this.port);
     assertEquals(response3.getStatusCode(), UNAUTHORIZED);
+  }
+
+  /**
+   * 测试通过token访问
+   */
+  @Test
+  public void testWithToken() throws IOException, URISyntaxException {
+    Map tokenMap = getTokenMap();
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", tokenMap.get("token_type") + " " + tokenMap.get("access_token"));
+    HttpEntity httpEntity = new HttpEntity(headers);
+    String url = "http://localhost:{port}";
+    ResponseEntity<String> response1 = restTemplate.exchange(url + "/", HttpMethod.GET, httpEntity, String.class, this.port);
+    assertEquals(response1.getStatusCode(), OK);
+    assertEquals(response1.getBody(), "Hello World");
+    ResponseEntity<String> response2 = restTemplate.postForEntity(url + "/", httpEntity, String.class, this.port);
+    assertEquals(response2.getStatusCode(), OK);
+    assertEquals(response2.getBody(), "OK");
+    ResponseEntity<String> response3 = restTemplate.exchange(url + "/user", HttpMethod.GET, httpEntity, String.class, this.port);
+    assertEquals(response3.getStatusCode(), OK);
+    assertNotNull(response3.getBody());
   }
 
   /**

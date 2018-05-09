@@ -1,5 +1,6 @@
 package com.example.token;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class RefreshTokenTest extends WebBaseTest {
 
   @Test
+  @Ignore
   public void getTokenByRefreshToken() throws IOException, URISyntaxException {
     Map tokenMap = getTokenMap();
     String accessToken = (String) tokenMap.get("access_token");
