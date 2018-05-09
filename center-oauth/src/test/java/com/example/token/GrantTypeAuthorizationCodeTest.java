@@ -34,8 +34,6 @@ import static org.springframework.http.HttpStatus.OK;
 @Slf4j
 public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
 
-  private String redirectUrl = "http://www.baidu.com";
-
 
   /**
    * authorization_code模式获取token
@@ -44,7 +42,7 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
   public void getTokenByAuthorizationCodeType() throws URISyntaxException, IOException {
     Map map = new HashMap();
     map.put("client_id", clientId);
-    map.put("redirect_uri", this.redirectUrl);
+    map.put("redirect_uri", "http://www.baidu.com");
     map.put("port", port);
 
     ResponseEntity<String> response;
