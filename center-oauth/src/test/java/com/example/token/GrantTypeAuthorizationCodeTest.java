@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -39,7 +41,7 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
    * authorization_code模式获取token
    */
   @Test
-  public void getTokenByAuthorizationCodeType() throws URISyntaxException {
+  public void getTokenByAuthorizationCodeType() throws URISyntaxException, IOException {
     Map map = new HashMap();
     map.put("client_id", clientId);
     map.put("redirect_uri", this.redirectUrl);
@@ -74,6 +76,13 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
                     , null, String.class, map);
     assertEquals(response.getStatusCode(), OK);
     assertNotNull(response.getBody());
-    log.info(response.getBody());
+
+    HashMap hashMap = mapper.readValue(response.getBody(), HashMap.class);
+    HttpHeaders headers1 = new HttpHeaders();
+    headers1.add("Authorization", hashMap.get("token_type") + " " + hashMap.get("access_token"));
+    response = restTemplate.exchange("http://localhost:{port}/user", GET, new HttpEntity(headers1), String.class, this.port);
+    assertEquals(response.getStatusCode(), OK);
+    assertNotNull(response.getBody());
   }
+
 }

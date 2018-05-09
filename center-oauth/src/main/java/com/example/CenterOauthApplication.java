@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +45,8 @@ public class CenterOauthApplication {
   }
 
   @GetMapping("/user")
-  public Principal getUser(Principal principal) {
-    return principal;
+  public Object getUser(Principal principal) {
+    return ((OAuth2Authentication) principal).getUserAuthentication();
   }
 
 
