@@ -1,7 +1,6 @@
 package com.example.token;
 
 import com.example.CenterOauthApplication;
-import com.example.TestApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +27,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpStatus.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT, classes = {CenterOauthApplication.class, TestApplication.class})
+@SpringBootTest(webEnvironment = RANDOM_PORT, classes = {CenterOauthApplication.class})
 public class WebBaseTest {
   @LocalServerPort
   protected int port;

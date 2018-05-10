@@ -1,3 +1,11 @@
 spring:
   application:
     name: center-oauth
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.boot.test.web.client: debug
