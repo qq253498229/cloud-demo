@@ -9,10 +9,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
@@ -22,6 +22,15 @@ public class UserControllerTest {
   private MockMvc mockMvc;
 
   @Test
+  public void testLogout() throws Exception {
+    mockMvc.perform(logout())
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("/login?logout"))
+            .andDo(print())
+    ;
+  }
+
+  @Test
   @WithMockUser(roles = "USER")
   public void getUser() throws Exception {
     mockMvc.perform(get("/user"))
@@ -29,13 +38,7 @@ public class UserControllerTest {
             .andExpect(jsonPath("username").value("user"))
             .andExpect(jsonPath("password").value("password"))
             .andExpect(jsonPath("authorities").isNotEmpty())
-    ;
-  }
-
-  @Test
-  public void regist() throws Exception {
-    mockMvc.perform(post("/user", new User()))
-            .andExpect(status().isUnauthorized())
+            .andDo(print())
     ;
   }
 }
