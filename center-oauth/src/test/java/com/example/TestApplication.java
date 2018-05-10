@@ -14,14 +14,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.security.Principal;
 import java.util.Arrays;
 
 @Configuration
@@ -37,12 +35,6 @@ public class TestApplication {
   public String create() {
     return "OK";
   }
-
-  @GetMapping("/user")
-  public Object getUser(Principal principal) {
-    return ((OAuth2Authentication) principal).getUserAuthentication();
-  }
-
 
   public static void main(String[] args) {
     SpringApplication.run(Arrays.asList(CenterOauthApplication.class, TestApplication.class), args);
