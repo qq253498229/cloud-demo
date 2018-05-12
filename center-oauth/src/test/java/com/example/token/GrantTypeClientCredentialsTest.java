@@ -1,6 +1,7 @@
 package com.example.token;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import static org.springframework.http.HttpStatus.OK;
  * token只能获取有效时间和client_id，无法获取用户信息
  */
 @Slf4j
+@Ignore
 public class GrantTypeClientCredentialsTest extends WebBaseTest {
   @Test
   public void getTokenByClientCredentialsType() throws IOException {
