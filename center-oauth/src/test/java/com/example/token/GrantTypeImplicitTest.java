@@ -1,18 +1,15 @@
 package com.example.token;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -20,10 +17,9 @@ import static org.springframework.http.HttpStatus.OK;
  * 通过implicit类型获取token
  */
 @Slf4j
-@Ignore
 public class GrantTypeImplicitTest extends WebBaseTest {
   @Test
-  public void getTokenByImplicitType() {
+  public void getTokenByImplicitType() throws IOException {
     Map map = new HashMap<>();
     map.put("port", port);
     map.put("client_id", clientId);
@@ -46,16 +42,14 @@ public class GrantTypeImplicitTest extends WebBaseTest {
                             "?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&user_oauth_approval=true&authorize=Authorize"
                     , new HttpEntity<>(headers), String.class, map);
     assertEquals(response.getStatusCode(), FOUND);
-    assertNull(response.getBody());
 
-    String[] result = response.getHeaders().getLocation().getFragment().split("&");
-    assertEquals(result.length, 5);
-    String accessToken = result[0].split("=")[1];
-    String tokenType = result[1].split("=")[1];
-    HttpHeaders headers1 = new HttpHeaders();
-    headers1.add("Authorization", tokenType + " " + accessToken);
-    response = restTemplate.exchange("http://localhost:{port}/user", GET, new HttpEntity(headers1), String.class, this.port);
-    assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
+    String fragment = response.getHeaders().getLocation().getFragment();
+    Map<String, String> resultMap = new HashMap();
+    Arrays.stream(fragment.split("&")).forEach(s -> resultMap.put(s.split("=")[0], s.split("=")[1]));
+    String token = resultMap.get("access_token");
+    String userInfoJson = new String(Base64.getDecoder().decode(token.split("\\.")[1]), "utf-8");
+    Map userInfoMap = mapper.readValue(userInfoJson, HashMap.class);
+    assertEquals(username, userInfoMap.get("user_name"));
+    assertEquals(clientId, userInfoMap.get("client_id"));
   }
 }

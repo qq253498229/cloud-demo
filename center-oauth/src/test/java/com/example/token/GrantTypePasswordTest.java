@@ -2,8 +2,6 @@ package com.example.token;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
@@ -12,7 +10,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -46,11 +43,8 @@ public class GrantTypePasswordTest extends WebBaseTest {
     assertEquals(response.getStatusCode(), OK);
     assertNotNull(response.getBody());
 
-    HashMap hashMap = mapper.readValue(response.getBody(), HashMap.class);
-    HttpHeaders headers1 = new HttpHeaders();
-    headers1.add("Authorization", hashMap.get("token_type") + " " + hashMap.get("access_token"));
-    response = restTemplate.exchange("http://localhost:{port}/user", GET, new HttpEntity(headers1), String.class, this.port);
-    assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
+    testResult(response);
   }
+
+
 }

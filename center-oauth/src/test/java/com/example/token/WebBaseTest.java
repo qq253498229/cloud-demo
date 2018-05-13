@@ -3,12 +3,11 @@ package com.example.token;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,7 +22,8 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -42,46 +42,10 @@ public class WebBaseTest {
   protected String username = "user";
   protected String password = "password";
 
-  /**
-   * 测试没认证时访问
-   */
+
   @Test
   public void contextLoads() {
-    String url = "http://localhost:{port}";
-    ResponseEntity<String> response1 = restTemplate.getForEntity(url + "/", String.class, this.port);
-    assertEquals(response1.getStatusCode(), UNAUTHORIZED);
-    ResponseEntity<String> response2 = restTemplate.postForEntity(url + "/", null, String.class, this.port);
-    assertEquals(response2.getStatusCode(), UNAUTHORIZED);
-    ResponseEntity<String> response3 = restTemplate.getForEntity(url + "/user", String.class, this.port);
-    assertEquals(response3.getStatusCode(), UNAUTHORIZED);
-  }
 
-  /**
-   * 测试通过token访问
-   */
-  @Test
-  public void testWithToken() throws IOException, URISyntaxException {
-    Map tokenMap = getTokenMap();
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", tokenMap.get("token_type") + " " + tokenMap.get("access_token"));
-    HttpEntity httpEntity = new HttpEntity(headers);
-    String url = "http://localhost:{port}";
-    ResponseEntity<String> response1 = restTemplate.exchange(url + "/", HttpMethod.GET, httpEntity, String.class, this.port);
-    assertEquals(response1.getStatusCode(), OK);
-    assertEquals(response1.getBody(), "Hello World");
-    ResponseEntity<String> response2 = restTemplate.postForEntity(url + "/", httpEntity, String.class, this.port);
-    assertEquals(response2.getStatusCode(), OK);
-    assertEquals(response2.getBody(), "OK");
-    ResponseEntity<String> response3 = restTemplate.exchange(url + "/user", HttpMethod.GET, httpEntity, String.class, this.port);
-    assertEquals(response3.getStatusCode(), OK);
-    assertNotNull(response3.getBody());
-  }
-
-  /**
-   * base64解码
-   */
-  protected String decode(String str) {
-    return new String(Base64.getDecoder().decode(str.getBytes()));
   }
 
   /**
@@ -100,7 +64,6 @@ public class WebBaseTest {
                             "?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}"
                     , null, String.class, map);
     assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
 
     List<String> setCookie = response.getHeaders().get("Set-Cookie");
     String jSessionIdCookie = setCookie.get(0);
@@ -112,7 +75,6 @@ public class WebBaseTest {
                             "?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&user_oauth_approval=true&authorize=Authorize"
                     , new HttpEntity<>(headers), String.class, map);
     assertEquals(response.getStatusCode(), FOUND);
-    assertNull(response.getBody());
 
     String location = response.getHeaders().get("Location").get(0);
     String query = new URI(location).getQuery();
@@ -121,8 +83,16 @@ public class WebBaseTest {
                             "?" + query + "&grant_type=authorization_code&redirect_uri={redirect_uri}"
                     , null, String.class, map);
     assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
 
     return mapper.readValue(response.getBody(), HashMap.class);
+  }
+
+  protected void testResult(ResponseEntity<String> response) throws IOException {
+    Map resultMap = mapper.readValue(response.getBody(), HashMap.class);
+    String token = (String) resultMap.get("access_token");
+    String userInfoJson = new String(Base64.getDecoder().decode(token.split("\\.")[1]), "utf-8");
+    Map userInfoMap = mapper.readValue(userInfoJson, HashMap.class);
+    assertEquals(username, userInfoMap.get("user_name"));
+    assertEquals(clientId, userInfoMap.get("client_id"));
   }
 }

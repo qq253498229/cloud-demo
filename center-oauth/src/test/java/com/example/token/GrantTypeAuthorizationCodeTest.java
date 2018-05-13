@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -64,7 +63,6 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
                             "?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&user_oauth_approval=true&authorize=Authorize"
                     , new HttpEntity<>(headers), String.class, map);
     assertEquals(response.getStatusCode(), FOUND);
-    assertNull(response.getBody());
 
     String location = response.getHeaders().get("Location").get(0);
     String query = new URI(location).getQuery();
@@ -75,12 +73,7 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
     assertEquals(response.getStatusCode(), OK);
     assertNotNull(response.getBody());
 
-    HashMap hashMap = mapper.readValue(response.getBody(), HashMap.class);
-    HttpHeaders headers1 = new HttpHeaders();
-    headers1.add("Authorization", hashMap.get("token_type") + " " + hashMap.get("access_token"));
-    response = restTemplate.exchange("http://localhost:{port}/user", GET, new HttpEntity(headers1), String.class, this.port);
-    assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
+    testResult(response);
   }
 
 }
