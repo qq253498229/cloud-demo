@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.client.CustomClientDetailsServiceImpl;
+import com.example.user.UserServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -33,15 +35,16 @@ public class CenterOauthApplication {
   @Configuration
   @EnableAuthorizationServer
   class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+    @Resource
+    private UserServiceImpl userService;
+    @Resource
+    private CustomClientDetailsServiceImpl customClientDetailsService;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
       clients
-              .inMemory()
-              .withClient("client")
-              .secret("$2a$10$BAOaZr9GEFB5tbq9XZFoVukuVOZk7kfPeXUyPaAuF5YysP9iZpmba")
-              .authorizedGrantTypes("authorization_code", "password", "refresh_token", "implicit", "client_credentials")
-              .scopes("app")
-              .redirectUris("http://www.baidu.com")
+              .withClientDetails(customClientDetailsService)
       ;
     }
 
@@ -53,15 +56,27 @@ public class CenterOauthApplication {
     @Resource
     private AuthenticationManager authenticationManager;
 
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+      return new JwtAccessTokenConverter();
+    }
+
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-      endpoints.authenticationManager(authenticationManager).accessTokenConverter(new JwtAccessTokenConverter());
+      endpoints.authenticationManager(authenticationManager).userDetailsService(userService).accessTokenConverter(jwtAccessTokenConverter());
     }
   }
 
   @Configuration
   @EnableWebSecurity
   class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    private UserServiceImpl userService;
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -71,7 +86,9 @@ public class CenterOauthApplication {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http
-              .authorizeRequests().anyRequest().authenticated()
+              .requestMatchers().anyRequest()
+              .and().authorizeRequests().antMatchers("/login**", "/logout**", "/oauth**", "/error*").permitAll()
+              .and().authorizeRequests().anyRequest().authenticated()
               .and().formLogin().permitAll()
               .and().logout().permitAll()
               .and().csrf().disable()
@@ -81,8 +98,10 @@ public class CenterOauthApplication {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.inMemoryAuthentication()
-              .withUser("user").password("$2a$10$nV6CpsBQ8RPKa97eOaHyGecfkdUZl62nC.5DaWh.etDEvzFMXxqDO").roles("USER");
+      auth
+              .userDetailsService(userService)
+              .passwordEncoder(passwordEncoder)
+      ;
     }
   }
 

@@ -1,9 +1,19 @@
 version: "3"
 services:
-  eureka:
-    image: registry.cn-beijing.aliyuncs.com/wangdali/center-eureka
+#  eureka:
+#    image: registry.cn-beijing.aliyuncs.com/wangdali/center-eureka
+#    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+#      TZ: Asia/Shanghai
+#    ports:
+#      - "8761:8761"
+  mysql:
+    image: mysql:5.7.21
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Shanghai
     ports:
-      - "8761:8761"
+      - "3306:3306"
+    volumes:
+      - "./docker/data/mysql:/var/lib/mysql"
+      - "./docker/conf/mysql/my.cnf:/etc/mysql/conf.d/my.cnf"

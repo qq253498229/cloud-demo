@@ -1,5 +1,3 @@
 spring:
   application:
     name: center-oauth
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource

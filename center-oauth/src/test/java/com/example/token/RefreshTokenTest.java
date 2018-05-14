@@ -1,6 +1,5 @@
 package com.example.token;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -15,12 +14,10 @@ import static org.springframework.http.HttpStatus.OK;
 /**
  * 通过refresh_token获取更新后的token
  * 前提：需要传入UserDetailsService
- * todo
  */
 public class RefreshTokenTest extends WebBaseTest {
 
   @Test
-  @Ignore
   public void getTokenByRefreshToken() throws IOException, URISyntaxException {
     Map tokenMap = getTokenMap();
     String accessToken = (String) tokenMap.get("access_token");
@@ -35,7 +32,8 @@ public class RefreshTokenTest extends WebBaseTest {
                             "?grant_type=refresh_token&refresh_token={refresh_token}",
                     null, String.class, tokenMap);
     assertEquals(response.getStatusCode(), OK);
-    assertNotNull(response.getBody());
+
+    testResult(response);
 
   }
 }
