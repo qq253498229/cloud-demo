@@ -73,7 +73,8 @@ public class CustomClientDetails implements ClientDetails, Serializable {
     this.registeredRedirectUri = registeredRedirectUri;
   }
 
-  public CustomClientDetails(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
+  public CustomClientDetails(String id, String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
+    this.id = id;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.scope = scope;
@@ -81,6 +82,10 @@ public class CustomClientDetails implements ClientDetails, Serializable {
     this.registeredRedirectUri = registeredRedirectUri;
     this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
+  }
+
+  public CustomClientDetails(String clientId) {
+    this.clientId = clientId;
   }
 
   @Override
@@ -152,6 +157,9 @@ public class CustomClientDetails implements ClientDetails, Serializable {
 
   @Override
   public Map<String, Object> getAdditionalInformation() {
+    if (this.additionalInformation == null) {
+      return null;
+    }
     try {
       return new ObjectMapper().readValue(this.additionalInformation, HashMap.class);
     } catch (IOException e) {

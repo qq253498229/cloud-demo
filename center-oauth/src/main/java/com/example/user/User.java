@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -53,7 +51,6 @@ public class User implements UserDetails, Serializable {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-  @LazyCollection(LazyCollectionOption.FALSE)
   private List<Role> roles = new ArrayList<>();
 
   @Override
@@ -61,6 +58,10 @@ public class User implements UserDetails, Serializable {
     Collection<GrantedAuthority> authorities = new ArrayList<>();
     this.roles.forEach(role -> authorities.add(role::getName));
     return authorities;
+  }
+
+  public User(String username) {
+    this.username = username;
   }
 
   public User(String username, String password, Boolean enabled) {
