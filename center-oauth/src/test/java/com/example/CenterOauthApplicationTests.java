@@ -24,7 +24,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("integration-test")
-@TestPropertySource("classpath*:application-integration-test.yml")
+@TestPropertySource("classpath:application-integration-test.yml")
 public class CenterOauthApplicationTests {
   @Test
   public void contextLoads() {
