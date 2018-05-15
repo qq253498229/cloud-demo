@@ -1,6 +1,5 @@
 package com.example.token;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -24,7 +23,6 @@ import static org.springframework.http.HttpStatus.OK;
  * 2:
  * .authorizedGrantTypes("password")
  */
-@Slf4j
 public class GrantTypePasswordTest extends WebBaseTest {
   /**
    * password模式获取token

@@ -1,6 +1,5 @@
 package com.example.token;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,14 +8,14 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
  * 通过implicit类型获取token
  */
-@Slf4j
 public class GrantTypeImplicitTest extends WebBaseTest {
   @Test
   public void getTokenByImplicitType() throws IOException {

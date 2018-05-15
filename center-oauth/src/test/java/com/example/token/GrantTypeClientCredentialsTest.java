@@ -1,6 +1,5 @@
 package com.example.token;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -9,16 +8,13 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
  * 通过client_credentials类型获取token
  * token只能获取有效时间和client_id，无法获取用户信息
  */
-@Slf4j
 public class GrantTypeClientCredentialsTest extends WebBaseTest {
   @Test
   public void getTokenByClientCredentialsType() throws IOException {
