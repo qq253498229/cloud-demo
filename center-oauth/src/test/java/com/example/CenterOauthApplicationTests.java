@@ -51,18 +51,19 @@ public class CenterOauthApplicationTests {
               new User("admin", encoder.encode("password"), true, Arrays.asList(role1.get(), role2.get()))
       ));
       user2.ifPresent(userRepository::save);
-
-      Optional<CustomClientDetails> customClientDetails = Optional.of(clientDetailsRepository.findOne(Example.of(new CustomClientDetails("client"))).orElse(
-              new CustomClientDetails(
-                      "1",
-                      "client",
-                      encoder.encode("secret"),
-                      "app",
-                      "password,authorization_code,refresh_token,implicit,client_credentials",
-                      "http://www.baidu.com",
-                      3600,
-                      7200)
-      ));
+      Optional<CustomClientDetails> customClientDetails = Optional.of(
+              Optional.ofNullable(clientDetailsRepository.findByClientId("client"))
+                      .orElse(
+                              new CustomClientDetails(
+                                      "1",
+                                      "client",
+                                      encoder.encode("secret"),
+                                      "app",
+                                      "password,authorization_code,refresh_token,implicit,client_credentials",
+                                      "http://www.baidu.com",
+                                      3600,
+                                      7200)
+                      ));
       customClientDetails.ifPresent(clientDetailsRepository::save);
     };
   }
