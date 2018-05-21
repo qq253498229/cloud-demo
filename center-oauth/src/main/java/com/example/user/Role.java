@@ -1,11 +1,8 @@
 package com.example.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +16,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "t_role")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role implements Serializable {
@@ -34,12 +32,10 @@ public class Role implements Serializable {
   private String name;
 
   @ManyToMany(mappedBy = "roles")
-  @LazyCollection(LazyCollectionOption.FALSE)
+  @JsonIgnore
   private List<User> users = new ArrayList<>();
 
   public Role(String name) {
     this.name = name;
   }
-
-
 }

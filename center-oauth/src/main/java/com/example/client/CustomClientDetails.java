@@ -73,8 +73,7 @@ public class CustomClientDetails implements ClientDetails, Serializable {
     this.registeredRedirectUri = registeredRedirectUri;
   }
 
-  public CustomClientDetails(String id, String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
-    this.id = id;
+  public CustomClientDetails(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.scope = scope;

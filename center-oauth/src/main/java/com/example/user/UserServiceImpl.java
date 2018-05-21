@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Package com.example.oauthtest.user
@@ -35,5 +36,13 @@ public class UserServiceImpl implements UserDetailsService {
     String encode = passwordEncoder.encode(user.getPassword());
     user.setPassword(encode);
     return userRepository.save(user);
+  }
+
+  public List<User> findPage(String s, String s1) {
+    return null;
+  }
+
+  public boolean register(User any) {
+    return false;
   }
 }

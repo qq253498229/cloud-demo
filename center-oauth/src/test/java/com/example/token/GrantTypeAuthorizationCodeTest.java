@@ -7,8 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +35,7 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
    * authorization_code模式获取token
    */
   @Test
-  public void getTokenByAuthorizationCodeType() throws URISyntaxException, IOException {
+  public void getTokenByAuthorizationCodeType() throws IOException {
     Map map = new HashMap();
     map.put("client_id", clientId);
     map.put("redirect_uri", "http://www.baidu.com");
@@ -54,6 +52,7 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
 
     List<String> setCookie = response.getHeaders().get("Set-Cookie");
     String jSessionIdCookie = setCookie.get(0);
+    assertNotNull(jSessionIdCookie);
     String cookieValue = jSessionIdCookie.split(";")[0];
     HttpHeaders headers = new HttpHeaders();
     headers.add("Cookie", cookieValue);
@@ -63,8 +62,8 @@ public class GrantTypeAuthorizationCodeTest extends WebBaseTest {
                     , new HttpEntity<>(headers), String.class, map);
     assertEquals(response.getStatusCode(), FOUND);
 
-    String location = response.getHeaders().get("Location").get(0);
-    String query = new URI(location).getQuery();
+    String query = response.getHeaders().getLocation().getQuery();
+    assertNotNull(query);
     response = new TestRestTemplate(clientId, secret)
             .postForEntity("http://localhost:{port}/oauth/token" +
                             "?" + query + "&grant_type=authorization_code&redirect_uri={redirect_uri}"

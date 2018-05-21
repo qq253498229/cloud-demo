@@ -55,7 +55,6 @@ public class CenterOauthApplicationTests {
               Optional.ofNullable(clientDetailsRepository.findByClientId("client"))
                       .orElse(
                               new CustomClientDetails(
-                                      "1",
                                       "client",
                                       encoder.encode("secret"),
                                       "app",
