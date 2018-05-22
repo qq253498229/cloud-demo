@@ -1,6 +1,7 @@
 package com.example.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,8 +24,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "t_user")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails, Serializable {
@@ -50,6 +50,7 @@ public class User implements UserDetails, Serializable {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
+  @JsonIgnoreProperties(value = { "users" })
   private List<Role> roles = new ArrayList<>();
 
   @Override
