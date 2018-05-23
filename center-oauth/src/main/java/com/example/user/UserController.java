@@ -1,12 +1,11 @@
 package com.example.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import static org.springframework.http.ResponseEntity.ok;
+import java.security.Principal;
 
 /**
  * @author wangbin
@@ -14,21 +13,11 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-  @Autowired
-  private UserServiceImpl userService;
 
   @GetMapping
-  public List<User> list() {
-    return null;
+  public Object list(Principal principal) {
+    return ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
   }
 
-  @GetMapping("/{pageNo}/{pageSize}")
-  public ResponseEntity<List<User>> page(@PathVariable("pageNo") String pageNo, @PathVariable("pageSize") String pageSize) {
-    return ok(userService.findPage(pageNo, pageSize));
-  }
 
-  @PostMapping("/register")
-  public ResponseEntity<Boolean> save(@RequestBody User user) {
-    return ok(userService.register(user));
-  }
 }

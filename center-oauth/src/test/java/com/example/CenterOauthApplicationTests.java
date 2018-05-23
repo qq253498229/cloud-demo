@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {CenterOauthApplication.class, CenterOauthApplicationTests.class})
 @ActiveProfiles("integration-test")
 @TestPropertySource("classpath:application-integration-test.yml")
 public class CenterOauthApplicationTests {
