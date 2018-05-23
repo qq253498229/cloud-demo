@@ -50,7 +50,7 @@ public class User implements UserDetails, Serializable {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-  @JsonIgnoreProperties(value = { "users" })
+  @JsonIgnoreProperties(value = {"users"})
   private List<Role> roles = new ArrayList<>();
 
   @Override
@@ -64,11 +64,6 @@ public class User implements UserDetails, Serializable {
     this.username = username;
   }
 
-  public User(String username, String password, Boolean enabled) {
-    this.username = username;
-    this.password = password;
-    this.enabled = enabled;
-  }
 
   public User(String username, String password, Boolean enabled, List<Role> roles) {
     this.username = username;

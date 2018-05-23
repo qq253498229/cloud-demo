@@ -23,8 +23,4 @@ public class CustomClientDetailsServiceImpl implements ClientDetailsService {
   public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
     return customClientDetailsRepository.findByClientId(clientId);
   }
-
-  public ClientDetails saveClientDetails(CustomClientDetails clientDetails) {
-    return customClientDetailsRepository.save(clientDetails);
-  }
 }

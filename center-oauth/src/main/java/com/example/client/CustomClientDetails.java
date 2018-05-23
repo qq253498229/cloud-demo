@@ -65,14 +65,6 @@ public class CustomClientDetails implements ClientDetails, Serializable {
   @Column
   private String additionalInformation;
 
-  public CustomClientDetails(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri) {
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
-    this.scope = scope;
-    this.authorizedGrantTypes = authorizedGrantTypes;
-    this.registeredRedirectUri = registeredRedirectUri;
-  }
-
   public CustomClientDetails(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
@@ -81,10 +73,6 @@ public class CustomClientDetails implements ClientDetails, Serializable {
     this.registeredRedirectUri = registeredRedirectUri;
     this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
-  }
-
-  public CustomClientDetails(String clientId) {
-    this.clientId = clientId;
   }
 
   @Override

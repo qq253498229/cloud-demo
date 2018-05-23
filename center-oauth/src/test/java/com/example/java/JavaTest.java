@@ -1,7 +1,6 @@
 package com.example.java;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class JavaTest {
   @Test
-  @Ignore
   public void testEncode() throws UnsupportedEncodingException {
     byte[] encode = Base64.getEncoder().encode("client:secret".getBytes());
     String result = new String(encode, "utf-8");
@@ -24,7 +22,6 @@ public class JavaTest {
   }
 
   @Test
-  @Ignore
   public void testPasswordEncoder() {
     PasswordEncoder encoder = new BCryptPasswordEncoder();
     String password = encoder.encode("password");

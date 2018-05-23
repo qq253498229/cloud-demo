@@ -28,7 +28,7 @@ import java.util.Optional;
 public class CenterOauthApplicationTests {
   @Test
   public void contextLoads() {
-
+    CenterOauthApplication.main(new String[]{});
   }
 
   @Bean
