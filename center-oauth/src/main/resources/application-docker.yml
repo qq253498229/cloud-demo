@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:3306/testcloud?useUnicode=true&characterEncoding=utf8&useSSL=false&autoReconnect=true&createDatabaseIfNotExist=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    show-sql: true

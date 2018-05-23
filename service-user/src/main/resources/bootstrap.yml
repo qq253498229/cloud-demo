@@ -1,14 +1,18 @@
 spring:
   application:
     name: service-user
+---
+spring:
+  profiles: default
+oauth.url: http://localhost:8080
 server:
   port: 8081
-security:
-  oauth2:
-    client:
-      access-token-uri: http://localhost:8080/oauth/token
-      user-authorization-uri: http://localhost:8080/oauth/authorize
-      client-id: client
-      client-secret: secret
-    resource:
-      token-info-uri: http://localhost:8080/oauth/check_token
+debug: true
+---
+spring:
+  profiles: docker
+oauth.url: http://oauth:8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka/

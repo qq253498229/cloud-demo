@@ -1,0 +1,9 @@
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      access-token-uri: ${oauth.url}/oauth/token
+      user-authorization-uri: ${oauth.url}/oauth/authorize
+    resource:
+      token-info-uri: ${oauth.url}/oauth/check_token
