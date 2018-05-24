@@ -1,7 +1,10 @@
 package com.example.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -20,6 +23,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"roles"})
 public class Role implements Serializable {
 
   @Id
@@ -32,7 +36,6 @@ public class Role implements Serializable {
   private String name;
 
   @ManyToMany(mappedBy = "roles")
-  @JsonIgnore
   private List<User> users = new ArrayList<>();
 
   public Role(String name) {

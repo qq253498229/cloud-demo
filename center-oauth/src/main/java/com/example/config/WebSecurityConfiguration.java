@@ -35,7 +35,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-
   @Override
   @Bean
   public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -43,11 +42,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable().httpBasic();
-    http.authorizeRequests().antMatchers("/favicon.ico").permitAll();
-    http.authorizeRequests().antMatchers("/login**", "/logout**", "/oauth**", "/error**", "/user/register").permitAll();
+    http.authorizeRequests().antMatchers("/favicon.ico", "/login**", "/logout**", "/oauth**", "/error**", "/user/register").permitAll();
     http.authorizeRequests().anyRequest().authenticated();
     http.formLogin().permitAll();
     http.logout().permitAll();
@@ -55,9 +52,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth
-            .userDetailsService(userService)
-            .passwordEncoder(passwordEncoder())
+    auth.userDetailsService(userService).passwordEncoder(passwordEncoder())
     ;
   }
 }

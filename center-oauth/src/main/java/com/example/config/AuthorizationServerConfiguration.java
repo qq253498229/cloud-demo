@@ -5,6 +5,7 @@ import com.example.user.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -31,25 +32,24 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private UserServiceImpl userService;
   @Resource
   private CustomClientDetailsServiceImpl customClientDetailsService;
-
-  @Override
-  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-    clients
-            .withClientDetails(customClientDetailsService)
-    ;
-  }
-
-  @Override
-  public void configure(AuthorizationServerSecurityConfigurer security) {
-    security.checkTokenAccess("isAuthenticated()").tokenKeyAccess("permitAll()");
-  }
-
+  @Resource
+  private PasswordEncoder passwordEncoder;
   @Resource
   private AuthenticationManager authenticationManager;
 
   @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {
     return new JwtAccessTokenConverter();
+  }
+
+  @Override
+  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    clients.withClientDetails(customClientDetailsService);
+  }
+
+  @Override
+  public void configure(AuthorizationServerSecurityConfigurer security) {
+    security.checkTokenAccess("isAuthenticated()").tokenKeyAccess("permitAll()").passwordEncoder(passwordEncoder);
   }
 
 

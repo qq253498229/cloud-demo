@@ -27,6 +27,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(value = {"users"})
 public class User implements UserDetails, Serializable {
   @Id
   @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -50,7 +51,6 @@ public class User implements UserDetails, Serializable {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-  @JsonIgnoreProperties(value = {"users"})
   private List<Role> roles = new ArrayList<>();
 
   @Override

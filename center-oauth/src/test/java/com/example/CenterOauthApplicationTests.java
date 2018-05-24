@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,20 +35,20 @@ public class CenterOauthApplicationTests {
   @Bean
   CommandLineRunner runner(UserRepository userRepository, RoleRepository roleRepository, CustomClientDetailsRepository clientDetailsRepository) {
     return args -> {
-      Optional<Role> role1 = Optional.of(roleRepository.findOne(Example.of(new Role("USER"))).orElse(new Role("USER")));
+      Optional<Role> role1 = Optional.of(Optional.ofNullable(roleRepository.findOne(Example.of(new Role("USER")))).orElse(new Role("USER")));
       roleRepository.save(role1.get());
-      Optional<Role> role2 = Optional.of(roleRepository.findOne(Example.of(new Role("ADMIN"))).orElse(new Role("ADMIN")));
+      Optional<Role> role2 = Optional.of(Optional.ofNullable(roleRepository.findOne(Example.of(new Role("ADMIN")))).orElse(new Role("ADMIN")));
       roleRepository.save(role2.get());
 
 
-      BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+      PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-      Optional<User> user1 = Optional.of(userRepository.findOne(Example.of(new User("user"))).orElse(
+      Optional<User> user1 = Optional.of(Optional.ofNullable(userRepository.findOne(Example.of(new User("user")))).orElse(
               new User("user", encoder.encode("password"), true, Collections.singletonList(role1.get()))
       ));
       user1.ifPresent(userRepository::save);
 
-      Optional<User> user2 = Optional.of(userRepository.findOne(Example.of(new User("admin"))).orElse(
+      Optional<User> user2 = Optional.of(Optional.ofNullable(userRepository.findOne(Example.of(new User("admin")))).orElse(
               new User("admin", encoder.encode("password"), true, Arrays.asList(role1.get(), role2.get()))
       ));
       user2.ifPresent(userRepository::save);
