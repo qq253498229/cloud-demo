@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.0.RELEASE</version>
+    <version>1.5.13.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -22,7 +22,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <spring-cloud.version>Finchley.RC1</spring-cloud.version>
+    <spring-cloud.version>Edgware.SR3</spring-cloud.version>
     <docker.image.prefix>registry.cn-beijing.aliyuncs.com/wangdali</docker.image.prefix>
   </properties>
 
@@ -33,15 +33,15 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-webflux</artifactId>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.springframework.boot</groupId>-->
+      <!--<artifactId>spring-boot-starter-webflux</artifactId>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+      <artifactId>spring-cloud-starter-eureka</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
@@ -49,7 +49,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <artifactId>spring-cloud-starter-feign</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
@@ -67,6 +67,17 @@
       <artifactId>mybatis-spring-boot-starter-test</artifactId>
       <version>1.3.2</version>
     </dependency>
+    <dependency>
+      <groupId>tk.mybatis</groupId>
+      <artifactId>mapper-spring-boot-starter</artifactId>
+      <version>2.0.0</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>mybatis</artifactId>
+          <groupId>org.mybatis</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -76,7 +87,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
@@ -99,11 +110,11 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+    <!--<dependency>-->
+    <!--<groupId>io.projectreactor</groupId>-->
+    <!--<artifactId>reactor-test</artifactId>-->
+    <!--<scope>test</scope>-->
+    <!--</dependency>-->
   </dependencies>
 
   <dependencyManagement>
@@ -146,8 +157,19 @@
       </plugin>
     </plugins>
   </build>
-
   <repositories>
+    <repository>
+      <id>aliyun</id>
+      <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>aliyun</id>
+      <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <!--<repositories>
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
@@ -156,6 +178,6 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-  </repositories>
+  </repositories>-->
 
 </project>
