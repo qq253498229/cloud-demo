@@ -26,7 +26,8 @@ import javax.annotation.Resource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+  @Resource
+  private LogoutSuccessHandler logoutSuccessHandler;
   @Resource
   private UserServiceImpl userService;
 
@@ -47,7 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests().antMatchers("/favicon.ico", "/login**", "/logout**", "/oauth**", "/error**", "/user/register").permitAll();
     http.authorizeRequests().anyRequest().authenticated();
     http.formLogin().permitAll();
-    http.logout().permitAll();
+    http.logout().logoutSuccessHandler(logoutSuccessHandler).permitAll();
   }
 
   @Override
