@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
 
+import static org.springframework.http.HttpMethod.POST;
+
 /**
  * Package com.example.config
  * Module
@@ -45,7 +47,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable().httpBasic();
-    http.authorizeRequests().antMatchers("/favicon.ico", "/login**", "/logout**", "/oauth**", "/error**", "/user/register").permitAll();
+    http
+            .authorizeRequests().antMatchers("/favicon.ico", "/login**", "/logout**", "/oauth**", "/error**", "/user/register").permitAll()
+            .antMatchers(POST, "/user").permitAll()
+    ;
     http.authorizeRequests().anyRequest().authenticated();
     http.formLogin().permitAll();
     http.logout().logoutSuccessHandler(logoutSuccessHandler).permitAll();

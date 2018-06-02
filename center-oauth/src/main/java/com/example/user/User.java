@@ -1,8 +1,9 @@
 package com.example.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +40,6 @@ public class User implements UserDetails, Serializable {
   private String username;
 
   @Column(nullable = false)
-  @JsonIgnore
   private String password;
 
   @Column
