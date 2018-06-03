@@ -1,6 +1,7 @@
 package com.example.user;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,18 +29,20 @@ public class UserController {
   @Resource
   private UserServiceImpl userService;
 
-  @GetMapping("/principal")
+  @GetMapping("/user")
   public Object currentUser(Principal principal) {
     return ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
   }
 
-  @GetMapping("/user")
+  @GetMapping("/users")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<List<User>> list() {
     return ok(userService.list());
   }
 
   @PostMapping("/user")
-  public ResponseEntity register(@RequestBody User user) {
+  public ResponseEntity register(Principal principal, @RequestBody User user) {
+    System.out.println(1);
     return null;
   }
 }

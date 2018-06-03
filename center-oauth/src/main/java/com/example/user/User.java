@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"users"})
+@JsonIgnoreProperties(value = {"users", "user"})
 public class User implements UserDetails, Serializable {
   @Id
   @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -36,11 +37,39 @@ public class User implements UserDetails, Serializable {
   @Column(length = 32)
   private String id;
 
-  @Column(unique = true, nullable = false)
+  private Date createAt;
+
+  private Date updateAt;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", insertable = false, updatable = false)
+  private User createBy;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", insertable = false, updatable = false)
+  private User updateBy;
+  /**
+   * 用户名
+   */
+  @Column(unique = true, nullable = false, length = 64)
   private String username;
 
-  @Column(nullable = false)
+  /**
+   * 手机
+   */
+  @Column(unique = true, length = 20)
+  private String phoneId;
+
+  /**
+   * 密码
+   */
+  @Column(nullable = false, length = 128)
   private String password;
+
+  /**
+   * 性别，0女，1男，2其它
+   */
+  private Integer sex;
 
   @Column
   private Boolean enabled = true;

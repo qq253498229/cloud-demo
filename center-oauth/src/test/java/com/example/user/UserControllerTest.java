@@ -41,9 +41,13 @@ public class UserControllerTest {
 
   private ObjectMapper mapper = new ObjectMapper();
 
+
+  /**
+   * 查看当前用户信息
+   */
   @Test
   public void principal() throws Exception {
-    mockMvc.perform(get("/principal"))
+    mockMvc.perform(get("/user"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.username").value("user"))
             .andExpect(jsonPath("$.password").value("password"))
@@ -53,21 +57,44 @@ public class UserControllerTest {
     ;
   }
 
+  /**
+   * 查看用户列表
+   */
   @Test
   public void list() throws Exception {
     given(userService.list()).willReturn(Arrays.asList(new User(), new User()));
-    mockMvc.perform(get("/user"))
+
+    mockMvc.perform(get("/users"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)))
             .andDo(print())
     ;
   }
 
+  /**
+   * 注册
+   */
   @Test
   public void register() throws Exception {
     User user = new User();
     user.setUsername("user");
     user.setPassword("password");
+
+    mockMvc.perform(post("/user")
+            .contentType(APPLICATION_JSON_UTF8)
+            .content(mapper.writeValueAsString(user)))
+            .andExpect(status().isOk())
+            .andDo(print())
+    ;
+  }
+
+  /**
+   * 修改个人信息
+   */
+  @Test
+  public void update() throws Exception {
+    User user = new User();
+    user.setSex(1);
 
     mockMvc.perform(post("/user")
             .contentType(APPLICATION_JSON_UTF8)
