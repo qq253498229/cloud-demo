@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserDetailsService {
   }
 
   public List<User> list() {
-    return null;
+    return userRepository.findAll();
+  }
+
+  public boolean register(User user) {
+    userRepository.save(user);
+    return true;
   }
 }
