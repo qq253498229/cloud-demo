@@ -18,12 +18,12 @@ import java.util.List;
  * @author wangbin
  */
 @Entity
-@Table(name = "t_role")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"roles"})
+@JsonIgnoreProperties(value = {"roles", "role"})
+@Table(name = "t_role")
 public class Role implements Serializable {
 
   @Id
@@ -35,7 +35,7 @@ public class Role implements Serializable {
   @Column(nullable = false, unique = true)
   private String name;
 
-  @ManyToMany(mappedBy = "roles")
+  @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
   private List<User> users = new ArrayList<>();
 
   public Role(String name) {

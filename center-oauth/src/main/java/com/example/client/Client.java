@@ -1,5 +1,6 @@
 package com.example.client;
 
+import com.example.util.JsonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,21 +12,17 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.*;
 
 /**
- * Client信息实体
- *
  * @author wangbin
  */
 @Entity
-@Table(name = "t_oauth_client_details")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomClientDetails implements ClientDetails, Serializable {
-  private static final ObjectMapper MAPPER = new ObjectMapper();
+@Table(name = "t_client")
+public class Client implements ClientDetails {
   @Id
   @GenericGenerator(name = "uuid", strategy = "uuid")
   @GeneratedValue(generator = "uuid")
@@ -65,7 +62,11 @@ public class CustomClientDetails implements ClientDetails, Serializable {
   @Column
   private String additionalInformation;
 
-  public CustomClientDetails(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
+  Client(String clientId) {
+    this.clientId = clientId;
+  }
+
+  public Client(String clientId, String clientSecret, String scope, String authorizedGrantTypes, String registeredRedirectUri, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.scope = scope;
@@ -147,14 +148,10 @@ public class CustomClientDetails implements ClientDetails, Serializable {
     if (this.additionalInformation == null) {
       return null;
     }
-    try {
-      return new ObjectMapper().readValue(this.additionalInformation, HashMap.class);
-    } catch (IOException e) {
-      return null;
-    }
+    return JsonUtil.parse(this.additionalInformation);
   }
 
-  public Set<String> getAutoApproveScope() {
+  private Set<String> getAutoApproveScope() {
     return StringUtils.commaDelimitedListToSet(this.autoApproveScope);
   }
 
@@ -181,6 +178,8 @@ public class CustomClientDetails implements ClientDetails, Serializable {
   public void setAutoApproveScope(Set<String> autoApproveScope) {
     this.autoApproveScope = StringUtils.collectionToCommaDelimitedString(autoApproveScope);
   }
+
+  private static final ObjectMapper MAPPER = new ObjectMapper();
 
   public void setAdditionalInformation(Map<String, Object> additionalInformation) {
     try {

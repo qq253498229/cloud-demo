@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 配置允许跨域
  * Package com.example.config
  * Module
  * Project cloud-demo

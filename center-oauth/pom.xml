@@ -14,17 +14,15 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.13.RELEASE</version>
-    <!--<version>2.0.0.RELEASE</version>-->
-    <relativePath/> <!-- lookup par6ent from repository -->
+    <version>2.0.2.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <!--<spring-cloud.version>Finchley.RC1</spring-cloud.version>-->
-    <spring-cloud.version>Edgware.SR3</spring-cloud.version>
+    <spring-cloud.version>Finchley.RC2</spring-cloud.version>
     <docker.image.prefix>registry.cn-beijing.aliyuncs.com/wangdali</docker.image.prefix>
   </properties>
 
@@ -33,13 +31,9 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.cloud</groupId>-->
-      <!--<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-eureka</artifactId>
+      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -53,7 +47,6 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-security</artifactId>
     </dependency>
-
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -63,19 +56,12 @@
       <groupId>com.alibaba</groupId>
       <artifactId>druid</artifactId>
       <version>1.1.9</version>
-      <scope>runtime</scope>
     </dependency>
 
-    <!--test-->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -86,6 +72,10 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
   </dependencies>
 
@@ -127,10 +117,15 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.0.0</version>
+      </plugin>
     </plugins>
   </build>
 
-  <!--<repositories>
+  <repositories>
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
@@ -139,5 +134,5 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-  </repositories>-->
+  </repositories>
 </project>

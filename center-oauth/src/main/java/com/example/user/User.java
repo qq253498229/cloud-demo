@@ -9,28 +9,23 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Package com.example.user
- * Module
- * Project cloud-demo
- * Email 253498229@qq.com
- * Created on 2018/5/9 下午11:27
+ * 用户实体
  *
  * @author wangbin
  */
 @Entity
-@Table(name = "t_user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(value = {"users", "user"})
-public class User implements UserDetails, Serializable {
+@Table(name = "t_user")
+public class User implements UserDetails {
   @Id
   @GenericGenerator(name = "uuid", strategy = "uuid")
   @GeneratedValue(generator = "uuid")
@@ -88,11 +83,6 @@ public class User implements UserDetails, Serializable {
     this.roles.forEach(role -> authorities.add(role::getName));
     return authorities;
   }
-
-  public User(String username) {
-    this.username = username;
-  }
-
 
   public User(String username, String password, Boolean enabled, List<Role> roles) {
     this.username = username;

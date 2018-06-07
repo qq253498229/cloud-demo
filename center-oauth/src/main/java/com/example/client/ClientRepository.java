@@ -7,13 +7,13 @@ import org.springframework.data.repository.query.Param;
 /**
  * @author wangbin
  */
-public interface CustomClientDetailsRepository extends JpaRepository<CustomClientDetails, String> {
+public interface ClientRepository extends JpaRepository<Client, String> {
   /**
-   * 通过clientId查找client信息
+   * 通过client_id查询client信息
    *
    * @param clientId clientId
    * @return client信息
    */
-  @Query("select c from CustomClientDetails c where c.clientId=:clientId")
-  CustomClientDetails findByClientId(@Param("clientId") String clientId);
+  @Query("select c from Client c where c.clientId=:clientId")
+  Client loadClientByClientId(@Param("clientId") String clientId);
 }
