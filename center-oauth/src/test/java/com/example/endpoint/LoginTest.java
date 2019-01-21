@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = {CenterOauthApplication.class, CenterOauthApplicationTests.class})
 @RunWith(SpringRunner.class)
-@ActiveProfiles("integration-test")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class LoginTest {
   @Autowired

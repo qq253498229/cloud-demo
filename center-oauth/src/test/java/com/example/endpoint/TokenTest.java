@@ -17,10 +17,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +43,7 @@ import static org.springframework.http.HttpStatus.OK;
  */
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = {CenterOauthApplication.class, CenterOauthApplicationTests.class})
 @RunWith(SpringRunner.class)
-@ActiveProfiles("integration-test")
+@ActiveProfiles("test")
 @Slf4j
 public class TokenTest {
   @LocalServerPort
@@ -75,7 +78,7 @@ public class TokenTest {
             .postForEntity(url, null, String.class, param);
     assertEquals(response.getStatusCode(), OK);
 
-    String cookie = response.getHeaders().get("Set-Cookie").get(0);
+    String cookie = Objects.requireNonNull(response.getHeaders().get("Set-Cookie")).get(0);
     HttpHeaders headers = new HttpHeaders();
     headers.add("Cookie", cookie);
     param.put("user_oauth_approval", true);
@@ -123,7 +126,7 @@ public class TokenTest {
     ObjectMapper mapper = new ObjectMapper();
     Map map = mapper.readValue(body, HashMap.class);
     String access_token = (String) map.get("access_token");
-    String userInfoJson = new String(Base64.getDecoder().decode(access_token.split("\\.")[1]), "utf-8");
+    String userInfoJson = new String(Base64.getDecoder().decode(access_token.split("\\.")[1]), UTF_8);
     Map userInfo = mapper.readValue(userInfoJson, HashMap.class);
     return USERNAME.equals(userInfo.get("user_name"));
   }

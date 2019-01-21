@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = {CenterOauthApplication.class, CenterOauthApplicationTests.class})
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@ActiveProfiles("integration-test")
+@ActiveProfiles("test")
 public class ClientControllerTest {
   @Autowired
   private MockMvc mockMvc;
